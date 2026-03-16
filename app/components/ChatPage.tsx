@@ -1,339 +1,3 @@
-// // "use client";
-
-// // import { useState } from "react";
-// // import { motion } from "framer-motion";
-
-// // function TypingDots() {
-// //   return (
-// //     <div className="flex items-center gap-2">
-// //       <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-sm">🤖</div>
-// //       <div className="flex gap-1">
-// //         <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0ms]"></span>
-// //         <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:150ms]"></span>
-// //         <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:300ms]"></span>
-// //       </div>
-// //     </div>
-// //   );
-// // }
-
-// // export default function ChatPage() {
-// //   const [messages, setMessages] = useState([
-// //     { role: "bot", text: "Hi 👋 I'm your AI Health Helpdesk. Ask me anything about appointments, symptoms, departments, or hospital facilities." },
-// //   ]);
-// //   const [input, setInput] = useState("");
-// //   const [loading, setLoading] = useState(false);
-
-// //   const clearChat = () => {
-// //     setMessages([{ role: "bot", text: "Hi 👋 I'm your AI Health Helpdesk. Ask me anything about appointments, symptoms, departments, or hospital facilities." }]);
-// //   };
-
-// //   const sendMessage = async () => {
-// //     if (!input.trim()) return;
-// //     const userMsg = { role: "user", text: input };
-// //     setMessages((prev) => [...prev, userMsg]);
-// //     setInput("");
-// //     setLoading(true);
-
-// //     try {
-// //       const res = await fetch("/api/chat", {
-// //         method: "POST",
-// //         headers: { "Content-Type": "application/json" },
-// //         body: JSON.stringify({ message: userMsg.text }),
-// //       });
-// //       const data = await res.json();
-// //       if (!res.ok || !data.reply) throw new Error("No reply");
-// //       setMessages((prev) => [...prev, { role: "bot", text: data.reply }]);
-// //     } catch {
-// //       setMessages((prev) => [...prev, { role: "bot", text: "Sorry, kuch problem hui. Please dobara try karein." }]);
-// //     } finally {
-// //       setLoading(false);
-// //     }
-// //   };
-
-// //   return (
-// //     <div className="min-h-screen bg-[#FFF6F1] flex items-center justify-center px-6">
-// //       <motion.div
-// //         initial={{ opacity: 0, y: 30 }}
-// //         animate={{ opacity: 1, y: 0 }}
-// //         transition={{ duration: 0.6 }}
-// //         className="bg-white w-full max-w-3xl rounded-3xl shadow-lg p-6 flex flex-col"
-// //       >
-// //         <div className="mb-4 flex items-center justify-between">
-// //           <div>
-// //             <h2 className="text-xl font-semibold text-gray-800">AI Health Helpdesk</h2>
-// //             <p className="text-sm text-gray-500">Ask your healthcare-related questions</p>
-// //           </div>
-// //           <button onClick={clearChat} className="text-xs text-gray-500 hover:text-pink-500 transition">Clear Chat</button>
-// //         </div>
-
-// //         <div className="flex-1 overflow-y-auto space-y-5 mb-4 px-1 min-h-[400px] max-h-[400px]">
-// //           {messages.map((msg, i) => (
-// //             <div key={i} className={`flex items-end gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-// //               {msg.role === "bot" && <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-sm">🤖</div>}
-// //               <div className={`max-w-[75%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${msg.role === "user" ? "bg-pink-300 text-gray-800 rounded-br-none" : "bg-gray-100 text-gray-700 rounded-bl-none"}`}>
-// //                 {msg.text}
-// //               </div>
-// //               {msg.role === "user" && <div className="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center text-sm text-white">🧑‍⚕️</div>}
-// //             </div>
-// //           ))}
-// //           {loading && <TypingDots />}
-// //         </div>
-
-// //         <div className="flex gap-2">
-// //           <input
-// //             value={input}
-// //             onChange={(e) => setInput(e.target.value)}
-// //             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-// //             placeholder="Type your health-related question here…"
-// //             className="flex-1 border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-200"
-// //           />
-// //           <button onClick={sendMessage} className="bg-pink-400 text-white px-6 py-2 rounded-full text-sm hover:opacity-90 transition">Send</button>
-// //         </div>
-// //       </motion.div>
-// //     </div>
-// //   );
-// // }
-
-
-
-
-// "use client";
-
-// import { useState, useRef, useEffect } from "react";
-// import { motion } from "framer-motion";
-
-// interface Message {
-//   role: "user" | "bot";
-//   text: string;
-// }
-
-// interface Conversation {
-//   id: string;
-//   title: string;
-//   messages: Message[];
-//   createdAt: Date;
-// }
-
-// function TypingDots() {
-//   return (
-//     <div className="flex items-center gap-2">
-//       <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-sm">🤖</div>
-//       <div className="flex gap-1">
-//         <span className="w-2 h-2 bg-pink-300 rounded-full animate-bounce [animation-delay:0ms]"></span>
-//         <span className="w-2 h-2 bg-pink-300 rounded-full animate-bounce [animation-delay:150ms]"></span>
-//         <span className="w-2 h-2 bg-pink-300 rounded-full animate-bounce [animation-delay:300ms]"></span>
-//       </div>
-//     </div>
-//   );
-// }
-
-// const WELCOME: Message = {
-//   role: "bot",
-//   text: "Hi 👋 I'm your AI Health Helpdesk. Ask me anything about appointments, symptoms, departments, or hospital facilities.",
-// };
-
-// export default function ChatPage() {
-//   const [conversations, setConversations] = useState<Conversation[]>([]);
-//   const [activeId, setActiveId] = useState<string | null>(null);
-//   const [messages, setMessages] = useState<Message[]>([WELCOME]);
-//   const [input, setInput] = useState("");
-//   const [loading, setLoading] = useState(false);
-//   const [sidebarOpen, setSidebarOpen] = useState(true);
-//   const bottomRef = useRef<HTMLDivElement>(null);
-
-//   useEffect(() => {
-//     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-//   }, [messages, loading]);
-
-//   const newChat = () => {
-//     // Save current chat to history if it has user messages
-//     if (messages.some((m) => m.role === "user")) {
-//       const title = messages.find((m) => m.role === "user")?.text.slice(0, 40) ?? "New Chat";
-//       const convo: Conversation = {
-//         id: Date.now().toString(),
-//         title,
-//         messages,
-//         createdAt: new Date(),
-//       };
-//       setConversations((prev) => [convo, ...prev]);
-//     }
-//     setActiveId(null);
-//     setMessages([WELCOME]);
-//     setInput("");
-//   };
-
-//   const loadConversation = (convo: Conversation) => {
-//     setActiveId(convo.id);
-//     setMessages(convo.messages);
-//   };
-
-//   const deleteConversation = (id: string, e: React.MouseEvent) => {
-//     e.stopPropagation();
-//     setConversations((prev) => prev.filter((c) => c.id !== id));
-//     if (activeId === id) {
-//       setActiveId(null);
-//       setMessages([WELCOME]);
-//     }
-//   };
-
-//   const sendMessage = async () => {
-//     if (!input.trim() || loading) return;
-//     const userMsg: Message = { role: "user", text: input };
-//     const updated = [...messages, userMsg];
-//     setMessages(updated);
-//     setInput("");
-//     setLoading(true);
-
-//     try {
-//       const res = await fetch("/api/chat", {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({ message: userMsg.text }),
-//       });
-//       const data = await res.json();
-//       const botMsg: Message = {
-//         role: "bot",
-//         text: data.reply ?? "Sorry, kuch problem hui.",
-//       };
-//       const final = [...updated, botMsg];
-//       setMessages(final);
-
-//       // Update conversation in sidebar if active
-//       if (activeId) {
-//         setConversations((prev) =>
-//           prev.map((c) => (c.id === activeId ? { ...c, messages: final } : c))
-//         );
-//       }
-//     } catch {
-//       setMessages((prev) => [...prev, { role: "bot", text: "Sorry, kuch problem hui. Dobara try karein." }]);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="flex h-[calc(100vh-73px)] bg-[#FFF6F1]">
-
-//       {/* SIDEBAR */}
-//       <motion.div
-//         animate={{ width: sidebarOpen ? 260 : 0 }}
-//         transition={{ duration: 0.3 }}
-//         className="overflow-hidden bg-white border-r border-pink-100 flex flex-col"
-//       >
-//         <div className="p-4 flex flex-col h-full">
-//           {/* New Chat Button */}
-//           <button
-//             onClick={newChat}
-//             className="w-full bg-pink-400 text-white rounded-xl py-2.5 text-sm font-medium hover:bg-pink-500 transition mb-4"
-//           >
-//             + New Chat
-//           </button>
-
-//           {/* Chat History */}
-//           <p className="text-xs text-gray-400 mb-2 px-1">Chat History</p>
-//           <div className="flex-1 overflow-y-auto space-y-1">
-//             {conversations.length === 0 && (
-//               <p className="text-xs text-gray-300 text-center mt-8">No history yet</p>
-//             )}
-//             {conversations.map((convo) => (
-//               <div
-//                 key={convo.id}
-//                 onClick={() => loadConversation(convo)}
-//                 className={`group flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer text-sm transition ${
-//                   activeId === convo.id
-//                     ? "bg-pink-50 text-pink-600"
-//                     : "hover:bg-gray-50 text-gray-600"
-//                 }`}
-//               >
-//                 <div className="flex items-center gap-2 overflow-hidden">
-//                   <span>💬</span>
-//                   <span className="truncate">{convo.title}</span>
-//                 </div>
-//                 <button
-//                   onClick={(e) => deleteConversation(convo.id, e)}
-//                   className="opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-400 transition text-xs ml-1"
-//                 >
-//                   ✕
-//                 </button>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </motion.div>
-
-//       {/* MAIN CHAT */}
-//       <div className="flex-1 flex flex-col">
-//         {/* Chat Header */}
-//         <div className="bg-white border-b border-pink-100 px-6 py-4 flex items-center justify-between">
-//           <div className="flex items-center gap-3">
-//             <button
-//               onClick={() => setSidebarOpen(!sidebarOpen)}
-//               className="text-gray-400 hover:text-pink-400 transition text-lg"
-//             >
-//               ☰
-//             </button>
-//             <div>
-//               <h2 className="text-base font-semibold text-gray-800">AI Health Helpdesk</h2>
-//               <p className="text-xs text-gray-400">Ask your healthcare-related questions</p>
-//             </div>
-//           </div>
-//           <button
-//             onClick={newChat}
-//             className="text-xs text-gray-400 hover:text-pink-400 transition"
-//           >
-//             New Chat +
-//           </button>
-//         </div>
-
-//         {/* Messages */}
-//         <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">
-//           {messages.map((msg, i) => (
-//             <div key={i} className={`flex items-end gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-//               {msg.role === "bot" && (
-//                 <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-sm flex-shrink-0">🤖</div>
-//               )}
-//               <div className={`max-w-[70%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
-//                 msg.role === "user"
-//                   ? "bg-pink-400 text-white rounded-br-none"
-//                   : "bg-white text-gray-700 rounded-bl-none shadow-sm border border-pink-50"
-//               }`}>
-//                 {msg.text}
-//               </div>
-//               {msg.role === "user" && (
-//                 <div className="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center text-sm text-white flex-shrink-0">🧑‍⚕️</div>
-//               )}
-//             </div>
-//           ))}
-//           {loading && <TypingDots />}
-//           <div ref={bottomRef} />
-//         </div>
-
-//         {/* Input */}
-//         <div className="bg-white border-t border-pink-100 px-6 py-4">
-//           <div className="flex gap-2">
-//             <input
-//               value={input}
-//               onChange={(e) => setInput(e.target.value)}
-//               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-//               placeholder="Type your health-related question here…"
-//               className="flex-1 border border-gray-200 rounded-full px-5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-pink-200"
-//             />
-//             <button
-//               onClick={sendMessage}
-//               disabled={loading}
-//               className="bg-pink-400 text-white px-6 py-2.5 rounded-full text-sm hover:bg-pink-500 transition disabled:opacity-50"
-//             >
-//               Send
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
 
 
 "use client";
@@ -577,8 +241,8 @@ export default function ChatPage() {
       </AnimatePresence>
 
       {/* SIDEBAR */}
-      <motion.div animate={{ width: sidebarOpen ? 260 : 0 }} transition={{ duration: 0.3 }} className="overflow-hidden bg-white border-r border-pink-100 flex flex-col flex-shrink-0">
-        <div className="p-4 flex flex-col h-full min-w-[260px]">
+      <motion.div animate={{ width: sidebarOpen ? 260 : 0 }} transition={{ duration: 0.3 }} className="overflow-hidden bg-white border-r border-pink-100 flex flex-col shrink-0">
+        <div className="p-4 flex flex-col h-full min-w-65">
           <button onClick={newChat} className="w-full bg-pink-400 text-white rounded-xl py-2.5 text-sm font-medium hover:bg-pink-500 transition mb-3">
             + {lang === "en" ? "New Chat" : "नई चैट"}
           </button>
@@ -639,7 +303,7 @@ export default function ChatPage() {
         <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
           {messages.map((msg, i) => (
             <div key={i} className={`flex items-end gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-              {msg.role === "bot" && <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-sm flex-shrink-0">🤖</div>}
+              {msg.role === "bot" && <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-sm shrink-0">🤖</div>}
               <div className="flex flex-col gap-1 max-w-[70%]">
                 <div className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${msg.role === "user" ? "bg-pink-400 text-white rounded-br-none" : "bg-white text-gray-700 rounded-bl-none shadow-sm border border-pink-50"}`}>
                   {msg.text}
@@ -652,7 +316,7 @@ export default function ChatPage() {
                   </div>
                 )}
               </div>
-              {msg.role === "user" && <div className="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center text-sm text-white flex-shrink-0">🧑‍⚕️</div>}
+              {msg.role === "user" && <div className="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center text-sm text-white shrink-0">🧑‍⚕️</div>}
             </div>
           ))}
           {loading && <TypingDots />}
@@ -662,7 +326,7 @@ export default function ChatPage() {
         {/* Quick Questions */}
         <div className="px-6 pb-2 flex gap-2 overflow-x-auto">
           {quickQuestions.map((q, i) => (
-            <button key={i} onClick={() => sendMessage(q)} className="flex-shrink-0 text-xs border border-pink-200 text-pink-500 px-3 py-1.5 rounded-full hover:bg-pink-50 transition">
+            <button key={i} onClick={() => sendMessage(q)} className="shrink-0 text-xs border border-pink-200 text-pink-500 px-3 py-1.5 rounded-full hover:bg-pink-50 transition">
               {q}
             </button>
           ))}
@@ -672,7 +336,7 @@ export default function ChatPage() {
         <div className="bg-white border-t border-pink-100 px-6 py-4">
           <div className="flex gap-2 items-center">
             {/* Voice Button */}
-            <button onClick={startVoice} className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition ${listening ? "bg-red-400 text-white animate-pulse" : "bg-pink-100 text-pink-400 hover:bg-pink-200"}`}>
+            <button onClick={startVoice} className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition ${listening ? "bg-red-400 text-white animate-pulse" : "bg-pink-100 text-pink-400 hover:bg-pink-200"}`}>
               🎤
             </button>
             <input
