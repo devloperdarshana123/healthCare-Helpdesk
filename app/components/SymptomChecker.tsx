@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Dancing_Script } from "next/font/google";
 
+
 const cursive = Dancing_Script({ subsets: ["latin"], weight: ["600"] });
 
 const SYMPTOMS = [
@@ -81,6 +82,7 @@ export default function SymptomChecker() {
   };
 
   return (
+
     <div className="min-h-screen bg-[#FFF6F1] px-6 py-16">
       <div className="max-w-3xl mx-auto">
 
@@ -253,5 +255,6 @@ export default function SymptomChecker() {
         </AnimatePresence>
       </div>
     </div>
+    
   );
 }
